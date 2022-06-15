@@ -15,6 +15,7 @@ public class OsuPuller {
 	private final static String wallpaperPath = "Wallpapers";
 	private final static File wallpapers = new File(wallpaperPath);
 	private static int count = 0;
+	private static int minHeight = 1080, minWidth = 1920;
 
 	public static void main(String[] args) throws IOException {
 		
@@ -22,6 +23,14 @@ public class OsuPuller {
 			wallpapers.mkdir();
 		
 		System.out.println(wallpapers.getAbsolutePath());
+		
+		if (args.length >= 2) {
+			minWidth = Integer.parseInt(args[0]);
+			minHeight = Integer.parseInt(args[1]);
+		}
+		
+		System.out.println("Extracting all images with dimensions of at least " + minWidth + "x" + minHeight);
+		
 		open(Paths.get(""));
 	}
 
@@ -47,8 +56,8 @@ public class OsuPuller {
 			
 				BufferedImage image = ImageIO.read(f);
 				
-				if (image.getWidth() < 1920 || image.getHeight() < 1080) {
-					System.out.println("Image " + f.getName() + " was too small!");
+				if (image.getWidth() < minWidth || image.getHeight() < minHeight) {
+					System.out.println("Image " + f.getName() + " was too small! Skipping image.");
 					return;
 				}
 				
